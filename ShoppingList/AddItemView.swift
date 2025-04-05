@@ -4,6 +4,8 @@
 //
 //  Created by Keyur Odedara on 2025-02-11.
 //
+//  done by Keyur Odedara (101413667)
+//  Description: This view allows users to add items to a selected category, calculating total price from quantity and tax.
 
 import SwiftUI
 
@@ -41,6 +43,7 @@ struct AddItemView: View {
         }
     }
 
+    // It saves item and links it to the category
     private func saveItem() {
         let newItem = Item(context: viewContext)
         newItem.name = name
@@ -48,9 +51,9 @@ struct AddItemView: View {
         newItem.quantity = Int64(quantity) ?? 1
         newItem.totalPrice = (Double(price) ?? 0.0) * Double(Int32(quantity) ?? 1)
         newItem.category = category
-        
+
         updateCategoryTotals()
-        
+
         do {
             try viewContext.save()
             dismiss()
@@ -58,6 +61,8 @@ struct AddItemView: View {
             print("Failed to save item: \(error)")
         }
     }
+
+    // We will update the totals of the category after adding an item
     private func updateCategoryTotals() {
         let items = category.items?.allObjects as? [Item] ?? []
         category.totalItems = Int32(items.count)

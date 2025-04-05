@@ -4,6 +4,9 @@
 //
 //  Created by Keyur Odedara on 2025-02-11.
 //
+//  done by Keyur Odedara (101413667) &
+//  Vatsal Prajapati (101414010)
+//  Description: This view allows users to edit a selected shopping category’s name and tax rate.
 
 import SwiftUI
 
@@ -12,7 +15,7 @@ struct EditCategoryView: View {
     @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var category: Category
-    
+
     @State private var name: String
     @State private var taxRate: String
 
@@ -42,15 +45,13 @@ struct EditCategoryView: View {
                 }
             }
         }
-        .onAppear {
-            print("Editing category:", category.name ?? "Unknown") // Debugging
-        }
     }
 
+    // we will save updated name and tax rate for this category
     private func saveChanges() {
         category.name = name
         category.taxRate = Double(taxRate) ?? 0.0
-        
+
         do {
             try viewContext.save()
             dismiss()
@@ -59,4 +60,3 @@ struct EditCategoryView: View {
         }
     }
 }
-

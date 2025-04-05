@@ -4,6 +4,9 @@
 //
 //  Created by Keyur Odedara on 2025-02-11.
 //
+//  done by Keyur Odedara (101413667) &
+//  Vatsal Prajapati (101414010)
+//  Description: This view allows users to update an item's name, price, and quantity.
 
 import SwiftUI
 
@@ -12,7 +15,7 @@ struct EditItemView: View {
     @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var item: Item
-    
+
     @State private var name: String
     @State private var price: String
     @State private var quantity: String
@@ -48,6 +51,7 @@ struct EditItemView: View {
         }
     }
 
+    // it will save updates to the item and recalculates totals
     private func saveChanges() {
         item.name = name
         item.price = Double(price) ?? 0.0
@@ -64,6 +68,7 @@ struct EditItemView: View {
         }
     }
 
+    // here we will recalculate total items and price in the item's category
     private func updateCategoryTotals() {
         let items = item.category?.items?.allObjects as? [Item] ?? []
         item.category?.totalItems = Int32(items.count)
@@ -75,5 +80,4 @@ struct EditItemView: View {
             print("Error updating category totals: \(error)")
         }
     }
-
 }

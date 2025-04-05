@@ -4,6 +4,8 @@
 //
 //  Created by Keyur Odedara on 2025-02-11.
 //
+//  done by Vatsal Prajapati (101414010)
+//  Description: Displays a list of items under a selected category, allows item editing/deleting, and shows summary.
 
 import SwiftUI
 import CoreData
@@ -15,7 +17,6 @@ struct ItemListView: View {
 
     @State private var showAddItem = false
     @State private var selectedItem: Item?
-    @State private var showEditItem = false
 
     init(category: Category) {
         self.category = category
@@ -37,7 +38,6 @@ struct ItemListView: View {
                         .swipeActions {
                             Button("Edit") {
                                 selectedItem = item
-                                showEditItem.toggle()
                             }
                             .tint(.blue)
 
@@ -64,24 +64,15 @@ struct ItemListView: View {
         }
     }
 
+    // This will show the total, tax, and number of items in this category
     private func summaryView() -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("📋 Category Summary")
-                .font(.headline)
-                .padding(.bottom, 5)
-
+            Text("📋 Category Summary").font(.headline).padding(.bottom, 5)
             Text("Original Price: $\(originalPrice(), specifier: "%.2f")")
-                .font(.subheadline)
             Text("Total Tax: $\(totalTax(), specifier: "%.2f")")
-                .font(.subheadline)
-            Text("Total Price: $\(totalPrice(), specifier: "%.2f")")
-                .font(.subheadline)
-                .foregroundColor(.blue)
-            Text("Total Items: \(items.count)")
-                .font(.subheadline)
-                .foregroundColor(.gray)
+            Text("Total Price: $\(totalPrice(), specifier: "%.2f")").foregroundColor(.blue)
+            Text("Total Items: \(items.count)").foregroundColor(.gray)
         }
-        .padding(.vertical, 5)
     }
 
     private func originalPrice() -> Double {
@@ -99,16 +90,11 @@ struct ItemListView: View {
     private func itemRow(item: Item) -> some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(item.name ?? "Unknown Item")
-                    .font(.headline)
-                Text("Price: $\(item.price, specifier: "%.2f") x \(item.quantity)")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                Text(item.name ?? "Unknown Item").font(.headline)
+                Text("Price: $\(item.price, specifier: "%.2f") x \(item.quantity)").foregroundColor(.gray)
             }
             Spacer()
-            Text("Total: $\(item.totalPrice, specifier: "%.2f")")
-                .font(.headline)
-                .foregroundColor(.blue)
+            Text("Total: $\(item.totalPrice, specifier: "%.2f")").foregroundColor(.blue)
         }
         .padding(.vertical, 6)
     }
@@ -118,7 +104,7 @@ struct ItemListView: View {
             let category = item.category
             viewContext.delete(item)
 
-            // Update Category Totals After Deleting an Item
+            // category totals
             let items = category?.items?.allObjects as? [Item] ?? []
             category?.totalItems = Int32(items.count)
             category?.totalPrice = items.reduce(0) { $0 + $1.totalPrice }

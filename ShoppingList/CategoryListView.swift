@@ -4,6 +4,8 @@
 //
 //  Created by Keyur Odedara on 2025-02-11.
 //
+//  done by Keyur Odedara (101413667)
+//  Description: Shows a list of all categories, allows adding/editing/deleting, and displays a summary of expenses.
 
 import SwiftUI
 import CoreData
@@ -17,12 +19,10 @@ struct CategoryListView: View {
 
     @State private var showAddCategory = false
     @State private var selectedCategory: Category?
-    @State private var showEditCategory = false
 
     var body: some View {
         NavigationView {
             VStack {
-                
                 summaryView()
                     .padding(.horizontal)
 
@@ -44,7 +44,6 @@ struct CategoryListView: View {
                     }
                     .onDelete(perform: deleteCategory)
                 }
-
                 .listStyle(PlainListStyle())
             }
             .navigationTitle("Categories")
@@ -60,7 +59,6 @@ struct CategoryListView: View {
                             .foregroundColor(.blue)
                     }
                 }
-
             }
             .sheet(isPresented: $showAddCategory) {
                 AddCategoryView()
@@ -68,50 +66,39 @@ struct CategoryListView: View {
             .sheet(item: $selectedCategory) { category in
                 EditCategoryView(category: category)
             }
-
         }
     }
 
+    // total calculations across all categories is showed
     private func summaryView() -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("📊 Summary")
-                .font(.headline)
-                .padding(.bottom, 5)
-            
+            Text(" Summary").font(.headline).padding(.bottom, 5)
             Text("Original Price: $\(originalPrice(), specifier: "%.2f")")
-                .font(.subheadline)
             Text("Total Tax: $\(totalTax(), specifier: "%.2f")")
-                .font(.subheadline)
-            Text("Total Price: $\(totalPrice(), specifier: "%.2f")")
-                .font(.subheadline)
-                .foregroundColor(.blue)
-            Text("Total Items: \(totalItems())")
-                .font(.subheadline)
-                .foregroundColor(.gray)
+            Text("Total Price: $\(totalPrice(), specifier: "%.2f")").foregroundColor(.blue)
+            Text("Total Items: \(totalItems())").foregroundColor(.gray)
         }
-        .padding(.vertical, 5)
     }
 
+    // helpful for calculations
     private func originalPrice() -> Double {
         return categories.reduce(0) { total, category in
-            let categoryOriginalPrice = category.items?.allObjects
-                .compactMap { ($0 as? Item)?.price ?? 0.0 * Double(($0 as? Item)?.quantity ?? 1) }
-                .reduce(0, +) ?? 0.0
-            return total + categoryOriginalPrice
+            let items = category.items?.allObjects as? [Item] ?? []
+            return total + items.reduce(0) { $0 + $1.price * Double($1.quantity) }
         }
     }
 
     private func totalTax() -> Double {
         return categories.reduce(0) { total, category in
-            let categoryTax = originalPrice() * (category.taxRate / 100)
-            return total + categoryTax
+            let catTotal = category.items?.allObjects as? [Item] ?? []
+            let catPrice = catTotal.reduce(0) { $0 + $1.price * Double($1.quantity) }
+            return total + (catPrice * (category.taxRate / 100))
         }
     }
 
     private func totalPrice() -> Double {
         return originalPrice() + totalTax()
     }
-
 
     private func totalItems() -> Int {
         return categories.reduce(0) { $0 + Int($1.totalItems) }
@@ -120,46 +107,29 @@ struct CategoryListView: View {
     private func categoryRow(category: Category) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text(category.name ?? "Unknown Category")
-                    .font(.headline)
-                Text("Tax: \(category.taxRate, specifier: "%.2f")%")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                Text("Total Price: $\(category.totalPrice, specifier: "%.2f")")
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
+                Text(category.name ?? "Unknown Category").font(.headline)
+                Text("Tax: \(category.taxRate, specifier: "%.2f")%").foregroundColor(.gray)
+                Text("Total Price: $\(category.totalPrice, specifier: "%.2f")").foregroundColor(.blue)
             }
             Spacer()
             Text("\(category.totalItems) Items")
-                .font(.subheadline)
                 .padding(5)
                 .background(Color.blue.opacity(0.1))
                 .cornerRadius(5)
         }
-        .padding(.vertical, 6)
     }
+
     private func deleteCategoryByID(_ category: Category) {
         withAnimation {
             viewContext.delete(category)
-            do {
-                try viewContext.save()
-            } catch {
-                print("Error deleting category: \(error)")
-            }
+            try? viewContext.save()
         }
     }
 
     private func deleteCategory(offsets: IndexSet) {
         withAnimation {
-            offsets.map { categories[$0] }.forEach { category in
-                viewContext.delete(category)
-            }
-
-            do {
-                try viewContext.save()
-            } catch {
-                print("Error deleting category: \(error)")
-            }
+            offsets.map { categories[$0] }.forEach(viewContext.delete)
+            try? viewContext.save()
         }
     }
 }
