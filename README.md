@@ -47,7 +47,26 @@ Charts (for Expense Summary) <br>
 Xcode 16.2 <br>
 
 **Screenshots of App**
-<img width="344" alt="Screenshot 2025-04-05 at 12 18 13 AM" src="https://github.com/user-attachments/assets/5455b0e4-7098-41fc-b708-dd5288bbc753" />
+<br>
+<img width="344" alt="img-1" src="https://github.com/user-attachments/assets/5455b0e4-7098-41fc-b708-dd5288bbc753" />
+
+<img width="350" alt="img-2" src="https://github.com/user-attachments/assets/d011226a-7417-40fb-b5bb-39db5e3a01db" />
+
+<img width="347" alt="img-3" src="https://github.com/user-attachments/assets/92da6206-5538-4626-8ff3-647affd6c648" />
+
+<img width="348" alt="img-4" src="https://github.com/user-attachments/assets/1e114c0d-e0e4-446d-b2a9-d56496926cab" />
+
+<img width="350" alt="img-5" src="https://github.com/user-attachments/assets/0c15b563-4bb4-4096-8e28-a66a1509af40" />
+
+<img width="363" alt="img-6" src="https://github.com/user-attachments/assets/3895bf89-e0e2-4c87-bb5e-84778e17bd20" />
+
+<img width="352" alt="img-7" src="https://github.com/user-attachments/assets/34a22230-a2dc-4299-9947-ef0bf2219189" />
+
+<img width="339" alt="img-8" src="https://github.com/user-attachments/assets/ab707cc2-48a0-418e-a25e-2a123224de06" />
+
+<img width="364" alt="img-9" src="https://github.com/user-attachments/assets/7369338e-2511-4cee-840b-1742057f41ba" />
+
+
 
 
 
