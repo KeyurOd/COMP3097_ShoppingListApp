@@ -45,3 +45,10 @@ Swift (SwiftUI) <br>
 Core Data (Persistent Storage) <br>
 Charts (for Expense Summary) <br>
 Xcode 16.2 <br>
+
+**Screenshots of App**
+<img width="344" alt="Screenshot 2025-04-05 at 12 18 13 AM" src="https://github.com/user-attachments/assets/5455b0e4-7098-41fc-b708-dd5288bbc753" />
+
+
+
+
